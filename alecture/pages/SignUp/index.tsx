@@ -6,53 +6,68 @@ import axios from 'axios';
 import useInput from '@hooks/useInput';
 
 const SignUp = () => {
-  const [email, onChangeEmail] = useInput("");
-  const [nickname, onChangeNickname] = useInput("");
-  const [password, , setPassword] = useInput("");
-  const [passwordCheck, , setPasswordCheck] = useInput("");
+  const [email, onChangeEmail] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
+  const [password, , setPassword] = useInput('');
+  const [passwordCheck, , setPasswordCheck] = useInput('');
   const [mismatchError, setMismatchError] = useState(false);
-  const [signUpError, setSignUpError] = useState("");
+  const [signUpError, setSignUpError] = useState('');
   const [signUpSuccess, setSignUpSuccess] = useState(false);
 
-  const onChangePassword = useCallback((e) => {
-    setPassword(e.target.value);
-    setMismatchError(e.target.value !== passwordCheck);
-  }, [passwordCheck]);
+  const onChangePassword = useCallback(
+    (e) => {
+      setPassword(e.target.value);
+      setMismatchError(e.target.value !== passwordCheck);
+    },
+    [passwordCheck],
+  );
 
-  const onChangePasswordCheck = useCallback((e) => {
-    setPasswordCheck(e.target.value);
-    setMismatchError(e.target.value !== password);
-  }, [password]);
-  
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-    console.log(email, nickname, password, passwordCheck);
+  const onChangePasswordCheck = useCallback(
+    (e) => {
+      setPasswordCheck(e.target.value);
+      setMismatchError(e.target.value !== password);
+    },
+    [password],
+  );
 
-    if(!mismatchError){
-      console.log("회원가입 진행");
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      console.log(email, nickname, password, passwordCheck);
 
-      // 로딩 - 기존 상태 초기화
-      setSignUpError("");
-      setSignUpSuccess(false);
+      if (!mismatchError) {
+        console.log('회원가입 진행');
 
-      // 회원가입 비동기
-      axios.post('/api/users', {
-        email, nickname, password,
-      },{
-        withCredentials: true
-    })
-      .then((response)=>{
-        console.log(response);
-        setSignUpSuccess(true);
-      })
-      .catch((error)=>{        
-        console.log(error.response);
-        setSignUpError(error.response.data);
-      })
-      .finally(()=>{})
-    }
+        // 로딩 - 기존 상태 초기화
+        setSignUpError('');
+        setSignUpSuccess(false);
 
-  }, [email, nickname, password, passwordCheck]);
+        // 회원가입 비동기
+        axios
+          .post(
+            '/api/users',
+            {
+              email,
+              nickname,
+              password,
+            },
+            {
+              withCredentials: true,
+            },
+          )
+          .then((response) => {
+            console.log(response);
+            setSignUpSuccess(true);
+          })
+          .catch((error) => {
+            console.log(error.response);
+            setSignUpError(error.response.data);
+          })
+          .finally(() => {});
+      }
+    },
+    [email, nickname, password, passwordCheck],
+  );
 
   return (
     <div id="container">
