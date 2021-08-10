@@ -2,18 +2,37 @@ import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } fro
 import React, { useCallback, useState } from 'react';
 
 const SignUp = () => {
-  const [email] = useState();
-  const [nickname] = useState();
-  const [password] = useState();
-  const [passwordCheck] = useState();
-  const [mismatchError] = useState();
-  const [signUpError] = useState();
-  const [signUpSuccess] = useState();
-  const onChangeEmail = useCallback(() => {}, []);
-  const onChangeNickname = useCallback(() => {}, []);
-  const onChangePassword = useCallback(() => {}, []);
-  const onChangePasswordCheck = useCallback(() => {}, []);
-  const onSubmit = useCallback(() => {}, []);
+  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [mismatchError, setMismatchError] = useState(false);
+
+  const onChangeEmail = useCallback((e) => {
+    setEmail(e.target.value);
+  }, []);
+
+  const onChangeNickname = useCallback((e) => {
+    setNickname(e.target.value);
+  }, [nickname]);
+
+  const onChangePassword = useCallback((e) => {
+    setPassword(e.target.value);
+    setMismatchError(e.target.value !== passwordCheck);
+  }, [passwordCheck]);
+
+  const onChangePasswordCheck = useCallback((e) => {
+    setPasswordCheck(e.target.value);
+    setMismatchError(e.target.value !== password);
+  }, [password]);
+  
+  const onSubmit = useCallback((e) => {
+    e.preventDefault();
+    console.log(email, nickname, password, passwordCheck);
+    if(!mismatchError)
+      console.log("회원가입 진행");
+
+  }, [email, nickname, password, passwordCheck]);
 
   return (
     <div id="container">
