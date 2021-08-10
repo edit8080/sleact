@@ -38,7 +38,9 @@ const SignUp = () => {
       // 회원가입 비동기
       axios.post('/api/users', {
         email, nickname, password,
-      })
+      },{
+        withCredentials: true
+    })
       .then((response)=>{
         console.log(response);
         setSignUpSuccess(true);
