@@ -1,11 +1,15 @@
 import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } from '@pages/SignUp/styles';
+import { Link, Redirect } from 'react-router-dom';
 import React, { useCallback, useState } from 'react';
 
-import { Link } from 'react-router-dom';
 import axios from 'axios';
+import fetcher from '@utils/fetcher';
 import useInput from '@hooks/useInput';
+import useSWR from 'swr';
 
 const SignUp = () => {
+  const { data, error, revalidate } = useSWR('http://localhost:3095/api/users', fetcher);
+
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
   const [password, , setPassword] = useInput('');
@@ -68,6 +72,10 @@ const SignUp = () => {
     },
     [email, nickname, password, passwordCheck],
   );
+
+  if (data) {
+    return <Redirect to="/workspace/channel" />;
+  }
 
   return (
     <div id="container">

@@ -1,7 +1,7 @@
 import { Button, Error, Form, Header, Input, Label, LinkContainer } from '@pages/SignUp/styles';
+import { Link, Redirect } from 'react-router-dom';
 import React, { useCallback, useState } from 'react';
 
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import fetcher from '@utils/fetcher';
 import useInput from '@hooks/useInput';
@@ -36,6 +36,10 @@ const LogIn = () => {
     },
     [email, password],
   );
+
+  if (data) {
+    return <Redirect to="/workspace/channel" />;
+  }
 
   return (
     <div id="container">
